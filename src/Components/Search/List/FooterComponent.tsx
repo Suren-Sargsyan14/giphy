@@ -1,11 +1,11 @@
-import React, {FC, memo} from 'react';
-import {StyleSheet, View, ActivityIndicator} from 'react-native';
+import React, { FC, memo } from 'react';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 
 interface FooterComponentProps {
   isLoading: boolean;
 }
 
-const FooterComponent: FC<FooterComponentProps> = ({isLoading}) =>
+const FooterComponent: FC<FooterComponentProps> = ({ isLoading }) =>
   isLoading ? (
     <View style={styles.container}>
       <ActivityIndicator size={'small'} />

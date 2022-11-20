@@ -1,12 +1,12 @@
-import React, {FC, memo} from 'react';
-import {StyleSheet, FlatList, Image} from 'react-native';
+import React, { FC, memo } from 'react';
+import { StyleSheet, FlatList, Image } from 'react-native';
 
-import {GIF_SIZE, GIFS_PER_ROW} from '../../../Constants/Giphy';
+import { GIF_SIZE, GIFS_PER_ROW } from '../../../Constants/Giphy';
 
 import EmptyComponent from './EmptyComponent';
 import FooterComponent from './FooterComponent';
 
-import {TGif} from '../../../Types/Giphy';
+import { TGif } from '../../../Types/Giphy';
 
 interface ListProps {
   data: TGif[];
@@ -14,7 +14,7 @@ interface ListProps {
   onEndReached: () => void;
 }
 
-const List: FC<ListProps> = ({data, onEndReached, isLoading}) => (
+const List: FC<ListProps> = ({ data, onEndReached, isLoading }) => (
   <FlatList
     data={data}
     numColumns={GIFS_PER_ROW}
@@ -22,7 +22,7 @@ const List: FC<ListProps> = ({data, onEndReached, isLoading}) => (
     onEndReached={onEndReached}
     keyExtractor={item => item?.id}
     showsVerticalScrollIndicator={false}
-    renderItem={({item}) => (
+    renderItem={({ item }) => (
       <Image
         style={styles.gif}
         source={{

@@ -1,15 +1,15 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {getStatusBarHeight} from 'react-native-iphone-x-helper';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
-import {getGifs} from '../../Services/Giphy';
+import { getGifs } from '../../Services/Giphy';
 
-import {GIF_SIZE, SEARCH_LIMIT} from '../../Constants/Giphy';
+import { GIF_SIZE, SEARCH_LIMIT } from '../../Constants/Giphy';
 
 import List from '../../Components/Search/List';
 import Header from '../../Components/Search/Header';
 
-import {TGif} from '../../Types/Giphy';
+import { TGif } from '../../Types/Giphy';
 
 const Search = () => {
   const [data, setData] = useState<TGif[]>([]);
@@ -20,49 +20,47 @@ const Search = () => {
   const timeoutRef = useRef<number>(0);
   const canLoadMore = useRef<boolean>(true);
 
+  const onEndReached = useCallback(async () => {
+    if (!isLoading && canLoadMore.current) {
+      setIsLoading(true);
+      const result = await getGifs(text, page.current * SEARCH_LIMIT);
+      ++page.current;
+
+      if (result?.gifs?.length) {
+        setData(previous => {
+          const newData = [...previous, ...result?.gifs];
+          canLoadMore.current =
+            newData?.length < (result?.pagination?.total_count || 0);
+
+          return newData;
+        });
+      }
+
+      setIsLoading(false);
+    }
+  }, [isLoading, text]);
+
   useEffect(() => {
     if (text) {
       setIsLoading(true);
     }
 
-    timeoutRef.current = setTimeout(() => {
-      getGifs(text).then(result => {
-        setIsLoading(false);
+    timeoutRef.current = setTimeout(async () => {
+      const result = await getGifs(text);
+      setIsLoading(false);
 
-        if (result?.gifs) {
-          setData(result?.gifs);
-        }
+      if (result?.gifs?.length) {
+        setData(result?.gifs);
+      }
 
-        page.current = 1;
+      page.current = 1;
 
-        canLoadMore.current =
-          (result?.gifs?.length || 0) < (result?.pagination?.total_count || 0);
-      });
+      canLoadMore.current =
+        (result?.gifs?.length || 0) < (result?.pagination?.total_count || 0);
     }, 300);
 
     return () => clearTimeout(timeoutRef.current);
   }, [text]);
-
-  const onEndReached = useCallback(() => {
-    if (!isLoading && canLoadMore.current) {
-      setIsLoading(true);
-      getGifs(text, page.current * SEARCH_LIMIT).then(async result => {
-        ++page.current;
-
-        if (result?.gifs) {
-          setData(previous => {
-            const newData = [...previous, ...result?.gifs];
-            canLoadMore.current =
-              newData?.length < (result?.pagination?.total_count || 0);
-
-            return newData;
-          });
-        }
-
-        setIsLoading(false);
-      });
-    }
-  }, [isLoading, text]);
 
   return (
     <View style={styles.container}>

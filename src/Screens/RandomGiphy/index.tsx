@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   View,
   Image,
@@ -6,14 +6,14 @@ import {
   StyleSheet,
   LayoutAnimation,
 } from 'react-native';
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 
-import {getRandomGif} from '../../Services/Giphy';
-import {TGif} from '../../Types/Giphy';
+import { getRandomGif } from '../../Services/Giphy';
+import { TGif } from '../../Types/Giphy';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
-const INTERVAL_TIMEOUT = 15000;
+const INTERVAL_TIMEOUT = 15 * 1000;
 
 const RandomGiphy = () => {
   const [giphy, setGiphy] = useState<TGif>();
@@ -21,32 +21,29 @@ const RandomGiphy = () => {
 
   useEffect(() => {
     getRandomGif().then((result: TGif | null) => {
-      LayoutAnimation.easeInEaseOut();
       if (result) {
+        LayoutAnimation.easeInEaseOut();
+
         setGiphy(result);
       }
     });
-
-    return () => {
-      clearInterval(intervalRef.current);
-    };
   }, []);
 
   useFocusEffect(
     useCallback(() => {
       // Setting interval inside useFocusEffect to avoid unnecessary requests when screen is unfocused
-      intervalRef.current = setInterval(() => {
-        getRandomGif().then(async (result: TGif | null) => {
-          if (result) {
-            // Prefetching gif before setting state to change dimensions of image when it will be loaded
-            if (result?.images?.original?.url) {
-              await Image.prefetch(result?.images?.original?.url);
-            }
+      intervalRef.current = setInterval(async () => {
+        const result: TGif | null = await getRandomGif();
 
-            LayoutAnimation.easeInEaseOut();
-            setGiphy(result);
+        if (result) {
+          // Prefetching gif before setting state to change dimensions of image when it will be loaded
+          if (result?.images?.original?.url) {
+            await Image.prefetch(result?.images?.original?.url);
           }
-        });
+
+          LayoutAnimation.easeInEaseOut();
+          setGiphy(result);
+        }
       }, INTERVAL_TIMEOUT);
 
       return () => {

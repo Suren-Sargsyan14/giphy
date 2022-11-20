@@ -1,6 +1,6 @@
-import React, {FC} from 'react';
-import {StyleSheet} from 'react-native';
-import {RouteProp} from '@react-navigation/native';
+import React, { FC } from 'react';
+import { StyleSheet } from 'react-native';
+import { RouteProp } from '@react-navigation/native';
 
 import {
   MainRootParamList,
@@ -18,7 +18,7 @@ interface TabBarIconsProps {
   >;
 }
 
-const TabBarIcons: FC<TabBarIconsProps> = ({focused, route}) => {
+const TabBarIcons: FC<TabBarIconsProps> = ({ focused, route }) => {
   switch (route.name) {
     case MainRootRouteNames.RANDOM_GIPHY:
       return (

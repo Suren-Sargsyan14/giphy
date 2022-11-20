@@ -1,8 +1,8 @@
-import React, {FC} from 'react';
-import {StyleSheet, Text} from 'react-native';
-import {RouteProp} from '@react-navigation/native';
+import React, { FC } from 'react';
+import { StyleSheet, Text } from 'react-native';
+import { RouteProp } from '@react-navigation/native';
 
-import {TAB_BAR_LABELS} from '../../Constants/Tabs';
+import { TAB_BAR_LABELS } from '../../Constants/Tabs';
 
 import {
   MainRootParamList,
@@ -17,7 +17,7 @@ interface TabBarLabelsProps {
   >;
 }
 
-const TabBarLabels: FC<TabBarLabelsProps> = ({focused, route}) => (
+const TabBarLabels: FC<TabBarLabelsProps> = ({ focused, route }) => (
   <Text style={[styles.text, !focused && styles.semiTransparent]}>
     {TAB_BAR_LABELS[route.name]}
   </Text>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, UIManager} from 'react-native';
+import { Platform, UIManager } from 'react-native';
 
 import Navigation from './src/Navigation';
 

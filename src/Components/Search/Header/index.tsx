@@ -1,5 +1,5 @@
-import React, {Dispatch, FC, memo, SetStateAction} from 'react';
-import {View, TextInput, StyleSheet} from 'react-native';
+import React, { Dispatch, FC, memo, SetStateAction } from 'react';
+import { View, TextInput, StyleSheet } from 'react-native';
 
 import Colors from '../../../Styles/Colors';
 
@@ -10,7 +10,7 @@ interface HeaderProps {
   setText: Dispatch<SetStateAction<string>>;
 }
 
-const Header: FC<HeaderProps> = ({text, setText}) => (
+const Header: FC<HeaderProps> = ({ text, setText }) => (
   <View style={styles.container}>
     <SearchIcon
       width={15}
