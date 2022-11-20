@@ -34,3 +34,9 @@ export type TGif = {
     [key: string]: GiphyImage;
   };
 };
+
+export type TGiphyPagination = {
+  count: number;
+  offset: number;
+  total_count: number;
+};
